@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>家庭财务管理系统</title>
+    <link rel="stylesheet" href="__STATIC__/bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript">
+        //全局变量，此处是 wind.js使用的变量，不用更改复制即可
+        var GV = {
+            ROOT: "__ROOT__/",
+            WEB_ROOT: "__WEB_ROOT__/",
+            JS_ROOT: "static/js/"
+        };
+    </script>
+    <script src="__STATIC__/js/wind.js"></script>
+</head>
+<body>
+<form class="well form-inline margin-top-20" method="get" action="">
+    <select name="category_id" class="form-control">
+        <option value="0">请选择分类</option>
+        <volist name="categorys" id="category">
+            <eq name="$category_id" value="$category.id">
+                <option selected value="{$category.id}">{$category.name}</option>
+                <else/>
+                <option value="{$category.id}">{$category.name}</option>
+            </eq>
+        </volist>
+    </select>
+    <input type="text" name="start_time" class="js-date form-control" placeholder="请选择开始时间" autocomplete="off" value="{$start_time}">
+    <input type="text" name="end_time" class="js-date form-control" placeholder="请选择结束时间" autocomplete="off" value="{$end_time}">
+    <input type="submit" class="btn btn-primary" value="搜索"/>
+    <a class="btn btn-danger" href="{:url('index')}">清空</a>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead data-toggle="collapse" data-target="#cates">
+        <tr>
+            <th>分类(点击伸缩)</th>
+            <th>金额(点击伸缩)</th>
+        </tr>
+        </thead>
+        <tbody id="cates" class="collapse">
+        <volist name="cates" id="cate">
+            <tr>
+                <td>{$cate.name}</td>
+                <td>{$cate.money|default=0.00}</td>
+            </tr>
+        </volist>
+        <tr style="color: #ef4949">
+            <td>总支出</td>
+            <td>{$popMoney|default=0.00}</td>
+        </tr>
+        <tr style="color: #62c462">
+            <td>总收入</td>
+            <td>{$pushMoney|default=0.00}</td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>分类</th>
+            <th>金额</th>
+            <th>备注</th>
+            <th>时间</th>
+            <th>操作</th>
+        </tr>
+        <tr>
+            <volist name="datas" id="data">
+        <tr>
+            <td>{$data.id}</td>
+            <td><span class="btn btn-default" style="background-color:{$categorys[$data.category_id]['color']} ">{$categorys[$data.category_id]['name']}</span></td>
+            <td>{$data.money}</td>
+            <td>{$data.remark}</td>
+            <td>{$data.create_time}</td>
+            <td>
+                <a class="btn btn-primary" href="{:url('edit',['id'=>$data.id])}">编辑</a>
+            </td>
+        </tr>
+        </volist>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="pagination">{$page}</div>
+<div class="row center-block">
+    <a class="btn btn-info" href="{:url('add')}">添加数据</a>
+</div>
+<script src="__STATIC__/js/jquery.js"></script>
+<script src="__STATIC__/bootstrap/js/bootstrap.min.js"></script>
+<script src="__STATIC__/js/frontend.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
+</body>
+</html>

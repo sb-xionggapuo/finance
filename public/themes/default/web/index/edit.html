@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>添加数据</title>
+    <link rel="stylesheet" href="__STATIC__/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row"><h4 class="text-center" style="font-weight: bold">添加数据</h4></div>
+    <form method="post" action="" id="ajax-form">
+        <input type="hidden" name="id" value="{$finance.id}">
+        <div class="form-group">
+            <label for="category">分类</label>
+            <select name="category_id" id="category" class="form-control">
+                <option value="0">请选择分类</option>
+                <volist name="categorys" id="category">
+                    <eq name="$finance.category_id" value="$category.id">
+                        <option selected value="{$category.id}">{$category.name}</option>
+                        <else/>
+                        <option value="{$category.id}">{$category.name}</option>
+                    </eq>
+
+                </volist>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">金额：</label>
+            <input type="number" name="money" class="form-control" id="exampleInputEmail1" placeholder="请输入金额" value="{$finance.money}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">备注：</label>
+            <textarea name="remark" id="exampleInputPassword1" class="form-control" rows="5" style="resize: none">{$finance.remark}</textarea>
+        </div>
+        <button type="button" class="btn btn-default" id="submit">提交</button>
+    </form>
+</div>
+
+<script src="__STATIC__/js/jquery.js"></script>
+<script src="__STATIC__/bootstrap/js/bootstrap.min.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
+<script>
+    $("#submit").click(function (){
+        var data = $("#ajax-form").serialize();
+        console.log(data);
+        $.ajax({
+            url:"{:url('edit')}",
+            method:"post",
+            data:data,
+            dataType:"json",
+            success:function (res){
+                console.log(res);
+                if (res.code==1){
+                    layer.msg(res.msg,{},function (){
+                        window.location.href = "{:url('index/index')}"
+                    })
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    });
+</script>
+</body>
+</html>
