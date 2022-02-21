@@ -33,8 +33,25 @@
     <a class="btn btn-danger" href="{:url('index')}">清空</a>
 </form>
 
-<div class="table-responsive">
-    <table class="table table-bordered">
+<div>
+    <div>
+        <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>总支出</th>
+            <th>总收入</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{$popMoney}</td>
+                <td>{$pushMoney|default=0}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div>
+        <table class="table table-bordered" style="margin-top:10px">
         <thead data-toggle="collapse" data-target="#cates">
         <tr>
             <th>分类(点击伸缩)</th>
@@ -48,17 +65,11 @@
                 <td>{$cate.money|default=0.00}</td>
             </tr>
         </volist>
-        <tr style="color: #ef4949">
-            <td>总支出</td>
-            <td>{$popMoney|default=0.00}</td>
-        </tr>
-        <tr style="color: #62c462">
-            <td>总收入</td>
-            <td>{$pushMoney|default=0.00}</td>
-        </tr>
         </tbody>
     </table>
-    <table class="table table-striped">
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
         <thead>
         <tr>
             <th>ID</th>
@@ -73,19 +84,23 @@
         <tr>
             <td>{$data.id}</td>
             <td><span class="btn btn-default" style="background-color:{$categorys[$data.category_id]['color']} ">{$categorys[$data.category_id]['name']}</span></td>
-            <td>{$data.money}</td>
+            <td>
+                <php>echo $data['category_id']==7||$data['category_id']==8?"+":"-";</php>{$data.money}
+                </td>
             <td>{$data.remark}</td>
             <td>{$data.create_time}</td>
-            <td>
-                <a class="btn btn-primary" href="{:url('edit',['id'=>$data.id])}">编辑</a>
-            </td>
+<!--            <td>-->
+<!--                <a class="btn btn-primary" href="{:url('edit',['id'=>$data.id])}">编辑</a>-->
+<!--            </td>-->
         </tr>
         </volist>
         </tr>
         </thead>
     </table>
+    <div class="pagination">{$page}</div>
+    </div>
 </div>
-<div class="pagination">{$page}</div>
+
 <div class="row center-block">
     <a class="btn btn-info" href="{:url('add')}">添加数据</a>
 </div>
